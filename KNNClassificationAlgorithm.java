@@ -1,11 +1,12 @@
 // Implementing KNN algorithm using weighted score and distance-weighted score model.
+package assignment1;
 
 import java.io.*;
 import java.util.*;
 import java.text.*;
 import javax.swing.*;
 
-public class KNNClassificationAlgorithm {
+public class KNNAlgorithm {
    static DecimalFormat df = new DecimalFormat("#.########");
    static String weightedResult = "\t\t\t\t[TestDataIndex,\t\tClass]\n";
    public static void main(String[] args) throws FileNotFoundException {
@@ -347,57 +348,45 @@ public class KNNClassificationAlgorithm {
       private static int findMajorityClass(int[] classes) {
 		int out = -1;
 		int[] uniqueValues = classes;
-		int[] counts = new int[uniqueValues.length];
-		for (int i = 0; i < uniqueValues.length; i++) {
-			for (int j = 0; j < classes.length; j++) {
-				if(classes[j] == uniqueValues[i]){
-					counts[i]++;
-				}
-			}        
-		}
+		ArrayList<Integer> count = new ArrayList<Integer>();
 		
-		int max = counts[0];
-		for (int counter = 1; counter < counts.length; counter++) {
-			if (counts[counter] > max) {
-				max = counts[counter];
-			}
-		}
+		for (int i = 0; i < uniqueValues.length; i++)
+			for (int j = 0; j < classes.length; j++)
+				if(classes[j] == uniqueValues[i])	count.add(i, 1);
 		
-		int freq = 0;
-		for (int counter = 0; counter < counts.length; counter++) {
-			if (counts[counter] == max) {
-				freq++;
-			}
-		}
+		int max = count.get(0);
+		for (int counter = 1; counter < uniqueValues.length; counter++)
+			if (count.get(counter) > max)		max = count.get(counter);
+		
+		int repeat = 0;
+		for (int counter = 0; counter < uniqueValues.length; counter++)
+			if (count.get(counter) == max)		repeat++;
 		
 		int index = -1;
-		if(freq==1){
-			for (int counter = 0; counter < counts.length; counter++) {
-				if (counts[counter] == max) {
+		if(repeat==1){
+			for (int counter = 0; counter < uniqueValues.length; counter++)
+				if (count.get(counter) == max) {
 					index = counter;
 					break;
 				}
-			}
 			
 			out = uniqueValues[index];
-		} else{//we have multiple maximum occurrences
-			int[] ix = new int[freq];//array of indices of occurrences
-			int ixi = 0;
-			for (int counter = 0; counter < counts.length; counter++) {
-				if (counts[counter] == max) {
-					ix[ixi] = counter;//save index of each max count value
-					ixi++; // increase index of ix array
+			
+		} else{																	//we have multiple maximum occurrences
+				int[] xIndex = new int[repeat];							//array of indices of occurrences
+				int temp = 0;
+				for (int counter = 0; counter < uniqueValues.length; counter++)
+					if (count.get(counter) == max) {
+						xIndex[temp] = counter;							//save index of each max count value
+						temp++; 													// increase index of ix array
 				}
-			}
 
-			//now choose one at random
-			Random generator = new Random();        
-			//get random number 0 <= rIndex < size of ix
-			int rIndex = generator.nextInt(ix.length);
-			int nIndex = ix[rIndex];
-			//return unique value at that index 
-			out = uniqueValues[nIndex];
-		}
+				Random generator = new Random();        
+				int rIndex = generator.nextInt(xIndex.length);
+				int nIndex = xIndex[rIndex];
+			
+				out = uniqueValues[nIndex];
+			}
 		
 		return out;
 	}
