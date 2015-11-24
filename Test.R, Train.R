@@ -1,5 +1,6 @@
 // Have used small proportions of 'R' to filter my Data. The code is given below.
-
+// After downloding the fils from the link in ReadMe file, use the following code and use the test and train files
+// from generated with this.
 
 // Test Files
 mydata1 = read.table("/Users/Dokuru/Desktop/Informatics_HW3/ml-100k/u1.test")
