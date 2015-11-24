@@ -1,1 +1,20 @@
 
+KNN Clustering algorithm
+
+
+Tasks involved: Implementing the k-NN algorithm, using Euclidean distance, majority voting scheme and distance - weighted voting scheme.
+
+Data for the files used in the program ,Glass Identification Data Set can be seen in: glass.txt file in root folder.
+
+Code is implemented to randomly pick up 75% of the records as the training set and use the rest of them as the test set.
+Made sure that in test set, I have records that are from different classes.
+
+Last column in the data set represents the class field.
+Tested the program with different values of k (k= {1, 5, 10}) on the generated training set and test set.
+Recorded the classification accuracies. Used, number of correctly classified records in test set to the number of 
+total records in test set as the accuracy percentage.
+
+Implemented k-NN algorithm above, using Euclidean distanceand the distance-weighted voting scheme.
+
+
+Thanks, Sunil
