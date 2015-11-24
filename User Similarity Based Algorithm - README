@@ -17,3 +17,6 @@ Java collections, HashMaps, ArrayLists, and arrays were used to code the project
 Dictionary was used to map the user ratings to the items, as a part of finding user similarities in Python.
 
 Supported files for this project: Java part, Readme file, Report of the project, Files used to program.
+
+
+Files to run this program can be downloaded here: http://files.grouplens.org/datasets/movielens/ml-100k.zip
