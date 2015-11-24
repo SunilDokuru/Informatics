@@ -1,16 +1,19 @@
+// Implementing KNN algorithm using weighted score and distance-weighted score model.
+
 import java.io.*;
 import java.util.*;
 import java.text.*;
 import javax.swing.*;
 
-public class KNearestNeighbors {
+public class KNNClassificationAlgorithm {
    static DecimalFormat df = new DecimalFormat("#.########");
    static String weightedResult = "\t\t\t\t[TestDataIndex,\t\tClass]\n";
    public static void main(String[] args) throws FileNotFoundException {
 
 		Random rand = new Random();
 		Scanner sc = null;
-      boolean condition = false;
+		boolean condition = false;
+      
       
 		// Loading the file into the system
 		File iterator = new File("glass.txt");
@@ -20,6 +23,7 @@ public class KNearestNeighbors {
          
          // Counting records in the file
 	      while(sc.hasNextLine()) {
+	    	  
 			   String in = sc.nextLine();
             if(tracker == 0) {
                tracker = Integer.MAX_VALUE;
@@ -40,6 +44,7 @@ public class KNearestNeighbors {
          while(sc.hasNextLine()) {
 	    	 
 	         String line = sc.nextLine();
+	         
 	         String[] row = line.split(delimiter);
 	         
 	         index++;
@@ -54,13 +59,12 @@ public class KNearestNeighbors {
          double[][] trainingData, testData;
 		
          ArrayList<Integer> train = new ArrayList<Integer>();
-         int l = 0;
          
+         int l = 0;
          // Randomizes the Training data set and the test data set, using Random().
          // Outer while loop is used to check if all the available classes are present in the test data set
       
         while(!condition) {
-        
         // Generating Training Data Set which is 75% of the Original selection Random       
             while(l < trainingDataLables.length) {
 	           int value = rand.nextInt(size) + 1;
@@ -86,27 +90,23 @@ public class KNearestNeighbors {
        }         
        
        // Retrieving Training Data and the Test Data from the Data Array
-       
        trainingData = fillData(data, trainingDataLables);
        testData = fillData(data, testDataLables);
-       
        //End retrieving data
               
        //Getting Classes of Training Data
-       
        int[] trainClass = new int[trainingDataLables.length];
        for(int i = 0; i < trainClass.length; i++)
             trainClass[i] = (int)data[trainingDataLables[i] - 1][10];
-            
        // END
          
        @SuppressWarnings("unused")
-       double[][] copyTrainingData = trainingData;
+	double[][] copyTrainingData = trainingData;
        @SuppressWarnings("unused")
-       double[][] copyTestData = testData;
+	double[][] copyTestData = testData;
+
          
-       // Normalizing Data: x/ sqrt(x2 + y2)
-       
+       // Normalizing Data - Technique Used: x/ sqrt(x2 + y2)
        for(int i = 0; i < trainingData.length; i++)
          trainingData[i] = normMath(trainingData[i]);
          
@@ -117,13 +117,15 @@ public class KNearestNeighbors {
                 
        //Finding the Eucledian Distance. Distance is calculated to each test record against all the training records.
        
-       /* The distances are stored along with the training record identifier and their classes are to be shown with
-       	  the distance, the training record id and the class.
-          We can track the testData index with the value of i in the forloop which is to be sent along with the 
-          testDataLable to the eucledian method */
+       /*  The distances are stored along with the training record identifier and their classes are to be shown with
+       		the distance, the training record id and the class.
+       		We can track the testData index with the value of i in the for-loop which is to be sent along with the 
+       		testDataLable to the Eucledian method */
        
        //The distances are then sorted accordingly. The top 10 smallest distances are stored in an result array.
        //This result array is then displayed for the required values of k.
+  
+       // Original Data[][] had been tested here before implementing the Eucledian distance and the data remains same
        
        condition = false;
        while(!condition) {
@@ -139,11 +141,6 @@ public class KNearestNeighbors {
                      knnMessage += eucledianMethod(testData, trainingData, data, testDataLables, trainClass, choice);
                      JOptionPane.showMessageDialog(null, knnMessage, "KNN Majority Classes Model", JOptionPane.PLAIN_MESSAGE);
                      JOptionPane.showMessageDialog(null, weightedResult, "KNN Weighted Scoring Model", JOptionPane.PLAIN_MESSAGE);
-                     
-                     /*System.out.println("Users choice of K is: " + choice);
-                     System.out.println("\n Output using Majority Classes\n\n " + knnMessage);
-                     System.out.println("\n----------------------------------------------------\n ");
-                     System.out.println("\n Output using Weighted Distance\n\n " + weightedResult);*/
                      break;
             default:
                      int dialogResult = JOptionPane.showConfirmDialog (null, "\t\t\t\tWrong Choice of 'K'\nDo you Want to re-enter value of K?","Try Again!!!",JOptionPane.YES_NO_OPTION);
@@ -166,16 +163,13 @@ public class KNearestNeighbors {
    }// END MAIN
    
    //Find the number of columns in the data
-   
 	private static int findCols(String in) {
 		String[] temp = in.split("\\,");
       	return temp.length;
 	}
-	
    //END FIND COLUMNS    
    
    //Get the labels for the training set data
-   
 	private static int find(int[] train, int index) {
 		int result = 0, k;
 		while(result == 0) {
@@ -186,11 +180,9 @@ public class KNearestNeighbors {
 		}
 		return result;
 	}
-	
    // END FIND Function which is used to get the testDataLables
    
    // Checking all classes in Test Data
-   
 	private static boolean checkAvail(double[][] original, int[] test, int index) {
       
 		ArrayList<Integer> holderOriginal = new ArrayList<Integer>();
@@ -213,7 +205,6 @@ public class KNearestNeighbors {
       // END Check Availability to get the Condition for the while in finding Test and Train data sets  
       
       // FILL Data Method: Data values are updated here
-      
 	   private static double[][] fillData(double[][] original, int[] index) {
 	   	double[][] indexD = new double[index.length][9];
 	   	for(int i = 0; i < indexD.length; i++){
@@ -222,13 +213,11 @@ public class KNearestNeighbors {
          }
       return indexD;
       }
-      
       // END Fill Data Method
       
       //Normalize Row method. Normalize using (x - min)/ (max - min)
-      
       @SuppressWarnings("unused")
-      private static double[] normalizeRow(double[] row) {
+	private static double[] normalizeRow(double[] row) {
          double max = Integer.MIN_VALUE;
          double min = Integer.MAX_VALUE;
          
@@ -245,11 +234,9 @@ public class KNearestNeighbors {
       
       return row;
       }
-      
       // END Normalize Method
       
       //Normalization using Mathematical Formula
-      
       private static double[] normMath(double[] row) {
          double sum = 0;
          for(int i = 0; i < row.length; i++)
@@ -261,7 +248,6 @@ public class KNearestNeighbors {
             
       return row;
       }
-      
       // END Normalization using Mathematical formula technique
       
       //Eucledian Distance Technique
@@ -288,7 +274,6 @@ public class KNearestNeighbors {
          }
          
          //Calculating Accuracy
-         
          accuracy = ((int)(((double)wmatches/ testData.length)*100)*100)/100;
          weightedResult += "\n\n\t\t\t\t Accuracy: " + accuracy+"%";
          
@@ -297,13 +282,14 @@ public class KNearestNeighbors {
       }
       // End Method Eucledian Distance
       
-      // Method to Calculate Distance called from Eucledian Distance
+      // Method Calculate Distance called from Eucledian Distance
       private static int[] calculateDistance(double[] testData, double[][] trainingData, double[][] data, int[] testLables, int[] trainClass, int k) {
          double[][] derivedClasses = new double[trainingData.length][2];
          double sum = 0;
          
          double[][] weightedDistance = new double[trainingData.length][2];
 
+         
          for(int i = 0; i < trainingData.length; i++) {
             for(int j = 0; j < testData.length; j++) {
                sum += Math.pow(trainingData[i][j] - testData[j], 2);
@@ -319,7 +305,6 @@ public class KNearestNeighbors {
         sort(derivedClasses);
         
         //Sorting Weights descending order
-        
         Arrays.sort(weightedDistance, new java.util.Comparator<double[]>() {
             public int compare(double[] a, double[] b) {
                return Double.compare(b[1], a[1]);
@@ -331,16 +316,14 @@ public class KNearestNeighbors {
             kWeights[i] = weightedDistance[i];
                 
         // K result sets required which are obtained from following
-        
         int[] kClasses = new int[k];
         for(int i = 0; i < kClasses.length; i++)
             kClasses[i] = (int)derivedClasses[i][0];
         
         //Find Majority Classes
-        
        int[] found = new int[2];
        found[0] = findMajorityClass(kClasses);
-       found[1] = findWeightedClass(kWeights);
+       found[1] = findWeight(kWeights);
        
        return found;
         
@@ -348,7 +331,6 @@ public class KNearestNeighbors {
       // END method calculateDistance
       
       //Method sort. Arrays.sort is used in this technique, this method is being called from calculateDistance method
-      
       public static void sort(double[][] distances) {
          Arrays.sort(distances, new Comparator<double[]>() {
             public int compare(double[] a, double[] b) {
@@ -359,55 +341,62 @@ public class KNearestNeighbors {
       // END sort method
       
       /* Find Majority Classes. Classes array is passed into this method, This method analyzes which are the most
-      repeated classes and ouputs the class. If there are two classes of equal occurences, then only one class is
+      repeated classes and outputs the class. If there are two classes of equal occurrences, then only one class is
       returned by this function */
       
-    private static int findMajorityClass(int[] classes) {
-		  int out = -1;
-		  int[] noRepeat = classes;
-		  int[] counts = new int[noRepeat.length];
-		  
-		  for(int i = 0; i < noRepeat.length; i++)
-			  for(int j = 0; j < classes.length; j++)
-				  if(classes[j] == noRepeat[i])
-					  counts[i]++;
+      private static int findMajorityClass(int[] classes) {
+		int out = -1;
+		int[] uniqueValues = classes;
+		int[] counts = new int[uniqueValues.length];
+		for (int i = 0; i < uniqueValues.length; i++) {
+			for (int j = 0; j < classes.length; j++) {
+				if(classes[j] == uniqueValues[i]){
+					counts[i]++;
+				}
+			}        
+		}
 		
-		  int max = counts[0];
-		  for(int i = 1; i < counts.length; i++)
-			  if(counts[i] > max)
-				  max = counts[i];
+		int max = counts[0];
+		for (int counter = 1; counter < counts.length; counter++) {
+			if (counts[counter] > max) {
+				max = counts[counter];
+			}
+		}
 		
-		  int repeat = 0;
-		  for(int i = 0; i < counts.length; i++)
-			  if(counts[i] == max)
-				  repeat++;
+		int freq = 0;
+		for (int counter = 0; counter < counts.length; counter++) {
+			if (counts[counter] == max) {
+				freq++;
+			}
+		}
+		
+		int index = -1;
+		if(freq==1){
+			for (int counter = 0; counter < counts.length; counter++) {
+				if (counts[counter] == max) {
+					index = counter;
+					break;
+				}
+			}
 			
-		  int index = -1;
-		  if(repeat == 1) {
-			  for(int counter = 0; counter < counts.length; counter++)
-				  if(counts[counter] == max) {
-					  index = counter;
-					  break;
-				  }
-			
-			  out = noRepeat[index];
-		  } else {                              	//we have multiple maximum occurences
-			int[] ix = new int[freq];               //array of indices of occurences
+			out = uniqueValues[index];
+		} else{//we have multiple maximum occurrences
+			int[] ix = new int[freq];//array of indices of occurrences
 			int ixi = 0;
 			for (int counter = 0; counter < counts.length; counter++) {
 				if (counts[counter] == max) {
-					ix[ixi] = counter;                //save index of each max count value
-					ixi++;                            // increase index of ix array
+					ix[ixi] = counter;//save index of each max count value
+					ixi++; // increase index of ix array
 				}
 			}
 
 			//now choose one at random
 			Random generator = new Random();        
-		                                      	//get random number 0 <= rIndex < size of ix
+			//get random number 0 <= rIndex < size of ix
 			int rIndex = generator.nextInt(ix.length);
 			int nIndex = ix[rIndex];
-		                                    	//return unique value at that index 
-			out = noRepeat[nIndex];
+			//return unique value at that index 
+			out = uniqueValues[nIndex];
 		}
 		
 		return out;
@@ -415,8 +404,7 @@ public class KNearestNeighbors {
    //END findMaorityClasses
    
    // Find Weights method called from Calculate Eucledian distance
-   
-   private static int findWeightedClass(double[][] weightsDistances) {
+   private static int findWeight(double[][] weightsDistances) {
       double[][] calculate = null;
       if(weightsDistances.length == 1)    return (int)weightsDistances[0][0];
       else {
@@ -445,6 +433,5 @@ public class KNearestNeighbors {
       }
     return (int)calculate[0][0];
    }
-   
    // End FindWeights
 }
