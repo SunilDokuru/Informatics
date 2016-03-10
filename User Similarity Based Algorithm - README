@@ -13,6 +13,8 @@ As a last step, we find the mean actual error of the values between the predicte
 First part of the program was implemented, i.e., finding the user similarities in Python (by Douglas Lewit, Northeastern Illinois),
 and the rest of the part was coded in Java (by Sunil Dokuru, Northeastern illinois).
 
+I have implemented calculating the  user Similarity matrix part in Java. You can find it in the root with the name movieRecommendations.java
+
 Java collections, HashMaps, ArrayLists, and arrays were used to code the project in Java.
 Dictionary was used to map the user ratings to the items, as a part of finding user similarities in Python.
 
